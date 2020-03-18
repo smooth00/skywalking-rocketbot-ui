@@ -47,11 +47,13 @@
   import Vue from 'vue';
   import { Component, PropSync, Watch } from 'vue-property-decorator';
   import { Action, Getter, State } from 'vuex-class';
+
   interface Endpoint {
     label: string;
     key: string;
     name?: string;
   }
+
   @Component({
     components: {
       EndpointsSurvey,
@@ -70,17 +72,22 @@
     @PropSync('isShow', { default: false })
     private isShowSync!: boolean;
     private endpointsSurveyHeight = '100%';
+
     private tabsLoading = true;
     private endpointName: string = '0';
     private endpointKey: string = '0';
     private endpoints: any[] = [];
+
     private dragIndex: number = NaN;
+
     public dragStart(index: number) {
       this.dragIndex = index;
     }
+
     private selectEndpoint(i: any) {
       this.SELECT_ENDPOINT({endpoint: i, duration: this.durationTime});
     }
+
     private handleRefresh() {
       this.GET_QUERY({
         serviceId: this.stateDashboardOption.currentService.key || '',
@@ -89,6 +96,7 @@
         duration: this.durationTime,
       });
     }
+
     private handleOption() {
       this.MIXHANDLE_CHANGE_GROUP_WITH_CURRENT({ index: 0, current: 2 });
       return this.MIXHANDLE_GET_OPTION({ compType: 'service', duration: this.durationTime })
@@ -96,6 +104,7 @@
         this.handleRefresh();
       });
     }
+
     @Watch('stateDashboardOption.endpoints')
     private watchInstances(endpoints: Endpoint[]) {
       _.forEach(endpoints, (endpoint) => {
@@ -111,16 +120,20 @@
       }
       this.tabsLoading = false;
     }
+
     private beforeMount() {
       this.handleOption();
     }
+
     private mounted() {
       this.resize();
       window.addEventListener('resize', this.resize);
     }
+
     private resize() {
       this.endpointsSurveyHeight = `${document.body.clientHeight - 101}px`;
     }
+
     private beforeDestroy() {
       window.removeEventListener('resize', this.resize);
     }

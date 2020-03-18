@@ -52,34 +52,27 @@ export const initState: State = {
 
 
 export const SetEndpoint = (state: State, params: any) => {
-  if (!params) {
-    return;
+  if (params &&
+    params.endpointP50 && params.endpointP75 && params.endpointP90 && params.endpointP95 && params.endpointP99) {
+    state.endpointPercent.p50 = params.endpointP50.values.map((i: Value) => i.value);
+    state.endpointPercent.p75 = params.endpointP75.values.map((i: Value) => i.value);
+    state.endpointPercent.p90 = params.endpointP90.values.map((i: Value) => i.value);
+    state.endpointPercent.p95 = params.endpointP95.values.map((i: Value) => i.value);
+    state.endpointPercent.p99 = params.endpointP99.values.map((i: Value) => i.value);
   }
-  if (params.endpointPercentile) {
-    const PercentileItem = ['p50', 'p75', 'p90', 'p95', 'p99'] as string[];
-    const endpointPercent = {} as any;
-
-    params.endpointPercentile.forEach((item: any, index: number) => {
-      if (item && item.values) {
-        const key = PercentileItem[index] as string;
-        endpointPercent[key] = item.values.map((i: any) => i.value);
-      }
-    });
-    state.endpointPercent = endpointPercent;
-  }
-  if (params.endpointResponseTime) {
+  if (params && params.endpointResponseTime) {
     state.endpointResponseTime.ResponseTime = params.endpointResponseTime.values.map((i: Value) => i.value);
   }
-  if (params.endpointThroughput) {
+  if (params && params.endpointThroughput) {
     state.endpointThroughput.Throughput = params.endpointThroughput.values.map((i: Value) => i.value);
   }
-  if (params.endpointSLA) {
+  if (params && params.endpointSLA) {
     state.endpointSLA.SLA = params.endpointSLA.values.map((i: Value) => i.value / 100);
   }
-  if (params.endpointSlowEndpoint) {
+  if (params && params.endpointSlowEndpoint) {
     state.endpointSlowEndpoint = params.endpointSlowEndpoint;
   }
-  if (params.endpointTopology) {
+  if (params && params.endpointTopology) {
     const serviceIdxMap = params.endpointTopology.endpoints.map((e: any) => (e.serviceName)).filter(
       function onlyUnique(value: any, index: number, self: any) {
         return self.indexOf(value) === index;
@@ -110,7 +103,7 @@ export const SetEndpoint = (state: State, params: any) => {
       top: 'top',
     }];
   }
-  if (params.endpointTraces) {
+  if (params && params.endpointTraces) {
     state.endpointTraces = params.endpointTraces.traces.map((i: any) => ({
       key: i.key,
       label: i.endpointNames[0],

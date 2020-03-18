@@ -17,6 +17,7 @@
 
 export const ADD_DASHBOARD_QUERY = 'ADD_DASHBOARD_QUERY';
 
+
 // dashboard
 export const SET_CURRENT_INDEX = 'SET_CURRENT_INDEX';
 export const SET_GLOBAL = 'SET_GLOBAL';

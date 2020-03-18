@@ -51,37 +51,29 @@ export const initState: State = {
 };
 
 export const SetService = (state: State, params: any) => {
-  if (!params) {
-    return;
-  }
-  if (params.serviceResponseTime) {
+  if (params && params.serviceResponseTime) {
     state.serviceResponseTime.ResponseTime = params.serviceResponseTime.values.map((i: Value) => i.value);
   }
-  if (params.serviceInstanceThroughput) {
+  if (params && params.serviceInstanceThroughput) {
     state.serviceInstanceThroughput = params.serviceInstanceThroughput;
   }
-  if (params.serviceSLA) {
+  if (params && params.serviceSLA) {
     state.serviceSLA.SLA = params.serviceSLA.values.map((i: Value) => i.value / 100);
   }
-  if (params.servicePercentile) {
-    const PercentileItem = ['p50', 'p75', 'p90', 'p95', 'p99'];
-    const servicePercent = {} as any;
-
-    params.servicePercentile.forEach((item: any, index: number) => {
-      if (item && item.values) {
-        const key = PercentileItem[index] as string;
-        servicePercent[key] = item.values.map((i: any) => i.value);
-      }
-    });
-    state.servicePercent = servicePercent;
+  if (params && params.serviceP50 && params.serviceP75 && params.serviceP90 && params.serviceP95 && params.serviceP99) {
+    state.servicePercent.p50 = params.serviceP50.values.map((i: Value) => i.value);
+    state.servicePercent.p75 = params.serviceP75.values.map((i: Value) => i.value);
+    state.servicePercent.p90 = params.serviceP90.values.map((i: Value) => i.value);
+    state.servicePercent.p95 = params.serviceP95.values.map((i: Value) => i.value);
+    state.servicePercent.p99 = params.serviceP99.values.map((i: Value) => i.value);
   }
-  if (params.serviceSlowEndpoint) {
+  if (params && params.serviceSlowEndpoint) {
     state.serviceSlowEndpoint = params.serviceSlowEndpoint;
   }
-  if (params.serviceThroughput) {
+  if (params && params.serviceThroughput) {
     state.serviceThroughput.Throughput = params.serviceThroughput.values.map((i: Value) => i.value);
   }
-  if (params.serviceApdexScore) {
+  if (params && params.serviceApdexScore) {
     state.serviceApdexScore.ApdexScore =
       params.serviceApdexScore.values.map((i: any) => Number((i.value / 10000).toFixed(2)));
   }
